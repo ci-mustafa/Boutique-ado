@@ -17,6 +17,10 @@
   {% block corecss %}
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
   {% endblock %}
 
   {% block extra_css %}
@@ -32,6 +36,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/fd7875ea58.js" crossorigin="anonymous"></script>
   {% endblock %}
 
   {% block extra_js %}
@@ -44,8 +49,17 @@
   <header class="container-fluid fixed-top">
     <!-- 'container-fluid': Creates a full-width container that spans the entire viewport width -->
     <!-- 'fixed-top': Positions the header at the top of the page and keeps it fixed during scrolling -->
-    <div class="row">
+    <div id="topnav" class="row bg-white pt-lg-2 d-none d-lg-flex">
       <!-- 'row': Creates a horizontal group of columns -->
+      <!-- 'bg-white': Sets the background color to white using Bootstrap's background utility class. -->
+
+      <!-- 'pt-lg-2': Applies padding-top (pt) of size 2, but only on large screens (lg) or wider. 
+         For smaller screens, there will be no padding-top applied. -->
+
+      <!-- 'd-none': Hides the element completely on all screen sizes. -->
+
+      <!-- 'd-lg-flex': Overrides 'd-none' on large screens (lg) and wider, displaying the element as a flex container. 
+         Ensures this navigation bar is only visible on larger screens and hidden on smaller ones. -->
 
       <!-- First Column -->
       <div class="col-12 col-lg-4 my-auto py-1 py-lg-0 text-center text-lg-left">
