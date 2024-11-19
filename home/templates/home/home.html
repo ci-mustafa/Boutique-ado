@@ -3,22 +3,43 @@
 
 {% block page_header %}
     <div class="container header-container">
+        <!-- Bootstrap 'container' class: Centers content and provides a responsive fixed-width layout -->
         <div class="row">
+            <!-- Bootstrap 'row' class: Creates a horizontal group of columns inside the container -->
             <div class="col"></div>
+            <!-- Bootstrap 'col' class: A single flexible column that spans the full width of the row -->
         </div>
     </div>
 {% endblock %}
 
 {% block content %}
     <div class="container h-100">
+        <!-- 'container': Centers content with responsive width -->
+        <!-- 'h-100': Sets the height of the container to 100% of its parent -->
         <div class="row h-100">
+            <!-- 'row': Groups columns horizontally -->
+            <!-- 'h-100': Ensures the row fills the full height of the parent -->
             <div class="col-7 col-md-6 my-auto">
+                <!-- 'col-7': On extra-small to small screens, column spans 7/12 grid columns -->
+                <!-- 'col-md-6': On medium and larger screens, column spans 6/12 grid columns -->
+                <!-- 'my-auto': Vertically centers content by applying auto margin on top and bottom -->
                 <h1 class="display-4 logo-font text-black">
+                    <!-- 'display-4': A large font size for prominent text (headline) -->
+                    <!-- 'logo-font': Likely a custom class for specific font styling -->
+                    <!-- 'text-black': Sets the text color to black -->
                     The new collections are here
                 </h1>
                 <div class="my-5">
+                    <!-- 'my-5': Adds top and bottom margin (spacing unit 5) -->
                     <h4>
-                        <a href="" class="shop-now-button btn btn-lg rounded-0 text-uppercase py-3">Shop Now</a>
+                        <a href="" class="shop-now-button btn btn-lg rounded-0 text-uppercase py-3">
+                            <!-- 'btn': Applies Bootstrap button styles (padding, border, etc.) -->
+                            <!-- 'btn-lg': Makes the button larger than the default size -->
+                            <!-- 'rounded-0': Removes rounded corners for a square design -->
+                            <!-- 'text-uppercase': Transforms text to uppercase -->
+                            <!-- 'py-3': Adds padding to the top and bottom of the button -->
+                            Shop Now
+                        </a>
                     </h4>
                 </div>
             </div>
