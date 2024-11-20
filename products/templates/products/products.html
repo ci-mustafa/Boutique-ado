@@ -2,23 +2,122 @@
 {% load static %}
 
 {% block page_header %}
-    <div class="container header-container">
-        <!-- Bootstrap 'container' class: Centers content and provides a responsive fixed-width layout -->
-        <div class="row">
-            <!-- Bootstrap 'row' class: Creates a horizontal group of columns inside the container -->
-            <div class="col"></div>
-            <!-- Bootstrap 'col' class: A single flexible column that spans the full width of the row -->
-        </div>
+<div class="container header-container">
+    <!-- Bootstrap 'container' class: Centers content and provides a responsive fixed-width layout -->
+    <div class="row">
+        <!-- Bootstrap 'row' class: Creates a horizontal group of columns inside the container -->
+        <div class="col"></div>
+        <!-- Bootstrap 'col' class: A single flexible column that spans the full width of the row -->
     </div>
+</div>
 {% endblock %}
 
 
 {% block content %}
-<div class="container">
+<!-- Overlay element for potential background effects, like modals or backdrops -->
+<div class="overlay"></div>
+
+<!-- Main container that spans the full width of the viewport (fluid) -->
+<div class="container-fluid">
+    <!-- Row for the header section, centering the title -->
     <div class="row">
-        <div class="col">
-            {{ products }}
+        <!-- Column with centered text and a margin-top of 3 (mt-3) -->
+        <div class="col text-center mt-3">
+            <!-- Page title with custom logo font -->
+            <h2 class="logo-font">Products</h2>
+            <!-- Horizontal line with width 50% and margin-bottom of 1 -->
+            <hr class="w-50 mb-1">
+        </div>
+    </div>
+
+    <!-- Row that will hold the product grid -->
+    <div class="row">
+        <!-- Product container that is 10 columns wide with an offset of 1 column to center it -->
+        <div class="product-container col-10 offset-1">
+            <!-- Empty row for spacing (potentially for future content) -->
+            <div class="row mt-1 mb-2"></div>
+
+            <!-- Row containing the actual product cards -->
+            <div class="row">
+                <!-- Loop through each product and display in grid items -->
+                {% for product in products %}
+                <!-- Column sizes based on screen size (sm, md, lg, xl) for responsiveness -->
+                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                    <!-- Card component for each product, full height and no border -->
+                    <div class="card h-100 border-0">
+
+                        <!-- Conditional rendering of product image -->
+                        {% if product.image %}
+                        <!-- If image exists, display the product image inside an anchor tag -->
+                        <a href="">
+                            <img class="card-img-top img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}">
+                        </a>
+                        {% else %}
+                        <!-- If no image, show a default placeholder image -->
+                        <a href="">
+                            <img class="card-img-top img-fluid" src="{{ MEDIA_URL }}noimage.png"
+                                alt="{{ product.name }}">
+                        </a>
+                        {% endif %}
+
+                        <!-- Card body containing the product name -->
+                        <div class="card-body pb-0">
+                            <!-- Display product name with no margin at the bottom -->
+                            <p class="mb-0">{{ product.name }}</p>
+                        </div>
+
+                        <!-- Card footer containing the product's price and rating -->
+                        <div class="card-footer bg-white pt-0 border-0 text-left">
+                            <div class="row">
+                                <div class="col">
+                                    <!-- Display product price with bold font, using the 'lead' class for emphasis -->
+                                    <p class="lead mb-0 text-left font-weight-bold">${{ product.price }}</p>
+                                    <!-- Conditional rendering of product rating, or show "No Rating" if not available -->
+                                    {% if product.rating %}
+                                    <small class="text-muted"><i class="fas fa-star mr-1"></i>{{ product.rating }} /
+                                        5</small>
+                                    {% else %}
+                                    <small class="text-muted">No Rating</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conditional horizontal line after every product to create breaks in the layout -->
+
+                <!-- Insert a horizontal line for small screens (e.g., mobile) after every first product -->
+                {% if forloop.counter|divisibleby:1 %}
+                <div class="col-12 d-sm-none mb-5">
+                    <hr>
+                </div>
+                {% endif %}
+
+                <!-- Insert a horizontal line for medium screens (e.g., tablets) after every second product -->
+                {% if forloop.counter|divisibleby:2 %}
+                <div class="col-12 d-none d-sm-block d-md-block d-lg-none mb-5">
+                    <hr>
+                </div>
+                {% endif %}
+
+                <!-- Insert a horizontal line for large screens (e.g., desktops) after every third product -->
+                {% if forloop.counter|divisibleby:3 %}
+                <div class="col-12 d-none d-lg-block d-xl-none mb-5">
+                    <hr>
+                </div>
+                {% endif %}
+
+                <!-- Insert a horizontal line for extra-large screens (e.g., large desktops) after every fourth product -->
+                {% if forloop.counter|divisibleby:4 %}
+                <div class="col-12 d-none d-xl-block mb-5">
+                    <hr>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>
+
 {% endblock %}
