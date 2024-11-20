@@ -10,4 +10,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['sku', 'name', 'description', 'price', 'rating', 'image', 'category__name']
+    list_display = ['sku', 'name', 'description', 
+                    'price', 'rating', 'image', 'category__friendly_name'
+                    ]
+    ordering = ('sku',)

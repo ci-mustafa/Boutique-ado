@@ -11,6 +11,8 @@ class Category(models.Model):
 
     def get_friendly_name(self):
         return self.friendly_name
+    class Meta:
+        verbose_name_plural = 'categories'
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='products', null=True, blank=True)
