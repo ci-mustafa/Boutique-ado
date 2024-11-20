@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <!-- Bootstrap 'container' class: Centers content and provides a responsive fixed-width layout -->
+        <div class="row">
+            <!-- Bootstrap 'row' class: Creates a horizontal group of columns inside the container -->
+            <div class="col"></div>
+            <!-- Bootstrap 'col' class: A single flexible column that spans the full width of the row -->
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {{ products }}
+        </div>
+    </div>
+</div>
+{% endblock %}
