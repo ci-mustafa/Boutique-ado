@@ -198,6 +198,48 @@
         </ul>
       </div>
     </div>
+    <div class="row bg-white">
+      <!-- "row": Creates a horizontal row container (Bootstrap grid system).
+           "bg-white": Applies a white background color to the row. -->
+      <nav class="navbar navbar-expand-lg navbar-light w-100">
+        <!-- "navbar": Defines a Bootstrap navigation bar.
+             "navbar-expand-lg": Makes the navbar responsive, expanding on large screens and collapsing on smaller ones.
+             "navbar-light": Styles the navbar with light background and dark text.
+             "w-100": Sets the navbar width to 100% to span the entire row. -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-nav"
+          aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <!-- "navbar-toggler": Styles the button for toggling the collapsed navbar on small screens.
+               "type='button'": Indicates this is a button element.
+               "data-toggle='collapse'": Enables Bootstrap's collapse functionality.
+               "data-target='#main-nav'": Specifies the target element (ID "main-nav") that this button toggles.
+               "aria-controls": Improves accessibility by indicating the controlled element.
+               "aria-expanded": Provides the initial expanded/collapsed state for screen readers.
+               "aria-label": Describes the purpose of the button for accessibility. -->
+          <span class="navbar-toggler-icon"></span>
+          <!-- "navbar-toggler-icon": A built-in Bootstrap class for the icon that indicates toggle functionality. -->
+        </button>
+        {% include 'includes/mobile-top-header.html' %}
+        <!-- Includes the mobile top header (likely a file with additional navigation or content for mobile views). -->
+        {% include 'includes/main-nav.html' %}
+        <!-- Includes the main navigation menu (likely a file containing the primary navigation structure). -->
+      </nav>
+    </div>
+
+    <div id="delivery-banner" class="row text-center">
+      <!-- "row": Creates a horizontal container for the banner.
+           "text-center": Centers the text inside the banner horizontally. -->
+      <div class="col bg-black text-white">
+        <!-- "col": Defines a single column spanning the entire row (default grid behavior).
+             "bg-black": Applies a black background color.
+             "text-white": Sets the text color to white for contrast. -->
+        <h4 class="logo-font my-1">
+          <!-- "logo-font": Likely a custom class for styling the font.
+               "my-1": Adds small vertical margins (top and bottom) to the heading. -->
+          Free delivery on orders over ${{ free_shipping_threshold }}!
+        </h4>
+      </div>
+    </div>
+
   </header>
 
 

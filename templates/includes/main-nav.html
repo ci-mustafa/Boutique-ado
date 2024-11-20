@@ -1,0 +1,78 @@
+<div class="collapse navbar-collapse" id="main-nav">
+    <!-- "collapse" class collapses the navigation bar in mobile view. 
+         "navbar-collapse" ensures the navbar items are shown/hidden based on screen size. -->
+    <ul class="navbar-nav w-auto mx-auto">
+        <!-- "navbar-nav" is used for styling the list of navigation links.
+             "w-auto" adjusts the width of the navigation to fit content.
+             "mx-auto" centers the list horizontally within the parent container. -->
+
+        <li class="nav-item dropdown">
+            <!-- "nav-item" styles this as an item in the navigation bar.
+                 "dropdown" enables dropdown functionality for this menu item. -->
+            <a class="logo-font font-weight-bold nav-link text-black mr-5" 
+               href="#" id="all-products-link" 
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <!-- "logo-font" is likely a custom class for specific font styling.
+                    "font-weight-bold" makes the text bold.
+                    "nav-link" styles the link to match Bootstrap navbar links.
+                    "text-black" ensures the text color is black.
+                    "mr-5" adds right margin for spacing between links.
+                    "data-toggle='dropdown'" enables the dropdown toggle functionality.
+                    "aria-haspopup" and "aria-expanded" are accessibility attributes for dropdown menus. -->
+                All Products
+            </a>
+            <div class="dropdown-menu border-0" aria-labelledby="all-products-link">
+                <!-- "dropdown-menu" styles this as the dropdown content container.
+                     "border-0" removes the border from the dropdown menu.
+                     "aria-labelledby" links the dropdown to the parent link for accessibility. -->
+                <a href="" class="dropdown-item">By Price</a>
+                <a href="" class="dropdown-item ">By Rating</a>
+                <a href="" class="dropdown-item ">By Category</a>
+                <a href="" class="dropdown-item">All Products</a>
+                <!-- "dropdown-item" styles individual items within the dropdown menu. -->
+            </div>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="logo-font font-weight-bold nav-link text-black mr-5" 
+               href="#" id="clothing-link" 
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Clothing
+            </a>
+            <div class="dropdown-menu border-0" aria-labelledby="clothing-link">
+                <a href="" class="dropdown-item">Activewear &amp; Essentials</a>
+                <a href="" class="dropdown-item">Jeans</a>
+                <a href="" class="dropdown-item">Shirts</a>
+                <a href="" class="dropdown-item">All Clothing</a>
+            </div>
+        </li>
+        <!-- Repeats similar structure as above for other dropdown items. -->
+
+        <li class="nav-item dropdown">
+            <a class="logo-font font-weight-bold nav-link text-black mr-5" 
+               href="#" id="homeware-link" 
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Homeware
+            </a>
+            <div class="dropdown-menu border-0" aria-labelledby="homeware-link">
+                <a href="" class="dropdown-item">Bed &amp; Bath</a>
+                <a href="" class="dropdown-item">Kitchen &amp; Dining</a>
+                <a href="" class="dropdown-item">All Homeware</a>
+            </div>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="logo-font font-weight-bold nav-link text-black" 
+               href="#" id="specials-link" 
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Special Offers
+            </a>
+            <div class="dropdown-menu border-0" aria-labelledby="specials-link">
+                <a href="" class="dropdown-item">New Arrivals</a>
+                <a href="" class="dropdown-item">Deals</a>
+                <a href="" class="dropdown-item">Clearance</a>
+                <a href="" class="dropdown-item">All Specials</a>
+            </div>
+        </li>
+    </ul>
+</div>

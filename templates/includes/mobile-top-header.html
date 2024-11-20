@@ -1,0 +1,102 @@
+<li class="list-inline-item">
+    <!-- "list-inline-item": Makes the list item display inline, aligning it horizontally in a line. -->
+    <a class="text-black nav-link d-block d-lg-none" href="#" id="mobile-search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <!-- "text-black": Sets the text color to black.
+             "nav-link": Adds default styling for navigation links in a navbar.
+             "d-block": Makes the link a block-level element (occupies full width).
+             "d-lg-none": Hides the link on large screens and above. It only appears on smaller screens.
+             "data-toggle='dropdown'": Enables dropdown functionality when clicked.
+             "aria-haspopup='true'": Indicates the link controls a dropdown for accessibility.
+             "aria-expanded='false'": Indicates the initial state of the dropdown is collapsed. -->
+        <div class="text-center">
+            <!-- "text-center": Centers the content (icon and text) inside this div horizontally. -->
+            <div><i class="fas fa-search fa-lg"></i></div>
+            <!-- "fas fa-search fa-lg": Font Awesome classes for a large search icon. -->
+            <p class="my-0">Search</p>
+            <!-- "my-0": Removes vertical margins from the paragraph. -->
+        </div>
+    </a>
+    <div class="dropdown-menu border-0 w-100 p-3 rounded-0 my-0" aria-labelledby="mobile-search">
+        <!-- "dropdown-menu": Styles the container as a dropdown menu.
+             "border-0": Removes the border from the dropdown.
+             "w-100": Sets the dropdown's width to 100% of its parent.
+             "p-3": Adds padding inside the dropdown menu.
+             "rounded-0": Removes rounded corners for a square design.
+             "my-0": Removes vertical margins.
+             "aria-labelledby='mobile-search'": Links the dropdown to the corresponding toggle element for accessibility. -->
+        <form class="form" method="GET" action="">
+            <!-- "form": Adds default form styling. -->
+            <div class="input-group w-100">
+                <!-- "input-group": Groups input and button elements together for consistent alignment.
+                     "w-100": Ensures the group spans the full width. -->
+                <input class="form-control border border-black rounded-0" type="text" name="q" placeholder="Search our site">
+                <!-- "form-control": Applies Bootstrap's styling for form inputs.
+                     "border border-black": Adds a black border around the input.
+                     "rounded-0": Ensures the input corners are square. -->
+                <div class="input-group-append">
+                    <!-- "input-group-append": Places the button next to the input field. -->
+                    <button class="form-control btn btn-black border border-black rounded-0" type="submit">
+                        <!-- "btn btn-black": Styles the button with custom "black" styling.
+                             "border border-black": Adds a black border to the button.
+                             "rounded-0": Ensures square corners. -->
+                        <span class="icon">
+                            <i class="fas fa-search"></i>
+                            <!-- "fas fa-search": Font Awesome search icon inside the button. -->
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</li>
+
+<li class="list-inline-item dropdown">
+    <!-- "list-inline-item": Makes the list item display inline.
+         "dropdown": Adds dropdown functionality. -->
+    <a class="text-black nav-link d-block d-lg-none" href="#" id="user-options" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <!-- Similar classes and functionality as above for a collapsible dropdown on smaller screens. -->
+        <div class="text-center">
+            <div><i class="fas fa-user fa-lg"></i></div>
+            <!-- "fas fa-user fa-lg": Font Awesome user icon. -->
+            <p class="my-0">My Account</p>
+        </div>
+    </a>
+    <div class="dropdown-menu border-0" aria-labelledby="user-options">
+        {% if request.user.is_authenticated %}
+            <!-- Checks if the user is logged in. -->
+            {% if request.user.is_superuser %}
+                <a href="{% url 'account_logout' %}" class="dropdown-item">Product Management</a>
+                <!-- "dropdown-item": Styles the link as a dropdown item. -->
+            {% endif %}
+            <a href="{% url 'profile' %}" class="dropdown-item">My Profile</a>
+            <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
+        {% else %}
+            <!-- If the user is not logged in. -->
+            <a href="{% url 'account_signup' %}" class="dropdown-item">Register</a>
+            <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
+        {% endif %}
+    </div>
+</li>
+
+<li class="list-inline-item">
+    <a class="{% if grand_total %}text-primary font-weight-bold{% else %}text-black{% endif %} nav-link d-block d-lg-none" href="">
+        <!-- Applies conditional styling for the link based on whether "grand_total" is defined:
+             - "text-primary font-weight-bold": Blue and bold if "grand_total" is present.
+             - "text-black": Black text if "grand_total" is absent.
+             "nav-link": Adds navigation link styling.
+             "d-block d-lg-none": Ensures visibility only on smaller screens. -->
+        <div class="text-center">
+            <div><i class="fas fa-shopping-bag fa-lg"></i></div>
+            <!-- "fas fa-shopping-bag fa-lg": Font Awesome shopping bag icon. -->
+            <p class="my-0">
+                {% if grand_total %}
+                    ${{ grand_total|floatformat:2 }}
+                    <!-- Displays the total amount formatted to two decimal places. -->
+                {% else %}
+                    $0.00
+                    <!-- Default amount if "grand_total" is undefined. -->
+                {% endif %}
+            </p>
+        </div>
+    </a>
+</li>
