@@ -10,7 +10,7 @@
             <!-- "nav-item" styles this as an item in the navigation bar.
                  "dropdown" enables dropdown functionality for this menu item. -->
             <a class="logo-font font-weight-bold nav-link text-black mr-5" 
-               href="#" id="all-products-link" 
+               href="" id="all-products-link" 
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                <!-- "logo-font" is likely a custom class for specific font styling.
                     "font-weight-bold" makes the text bold.
@@ -28,7 +28,7 @@
                 <a href="" class="dropdown-item">By Price</a>
                 <a href="" class="dropdown-item ">By Rating</a>
                 <a href="" class="dropdown-item ">By Category</a>
-                <a href="" class="dropdown-item">All Products</a>
+                <a href="{% url 'all-products' %}" class="dropdown-item">All Products</a>
                 <!-- "dropdown-item" styles individual items within the dropdown menu. -->
             </div>
         </li>
