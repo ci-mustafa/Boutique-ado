@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <!-- Container for the page header -->
+    <div class="container header-container"> <!-- Full-width container for the header -->
+        <div class="row"> <!-- Horizontal row for layout -->
+            <div class="col"></div> <!-- Empty column, flexible width -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <!-- Overlay for visual effect -->
+    <div class="overlay"></div>
+    <div class="container-fluid"> <!-- Full-width container -->
+        <div class="row"> <!-- Horizontal row for layout -->
+            <!-- Column for product image -->
+            <div class="col-12 col-md-6 col-lg-4 offset-lg-2"> 
+                <!-- Takes full width on small screens (col-12), half width on medium screens (col-md-6), 
+                     one-third width on large screens (col-lg-4), and adds a two-column offset on large screens (offset-lg-2) -->
+                <div class="image-container my-5"> <!-- Custom class for image styling, with margin on top and bottom (my-5) -->
+                    {% if product.image %}
+                        <a href="{{ product.image.url }}" target="_blank"> <!-- Link to open the full image in a new tab -->
+                            <img class="card-img-top img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}">
+                            <!-- img-fluid ensures the image is responsive, and card-img-top styles it as a card image -->
+                        </a>
+                    {% else %}
+                        <a href=""> <!-- Placeholder if no product image exists -->
+                            <img class="card-img-top img-fluid" src="{{ MEDIA_URL }}noimage.png" alt="{{ product.name }}">
+                            <!-- Default placeholder image with responsive styling -->
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- Column for product details -->
+            <div class="col-12 col-md-6 col-lg-4"> 
+                <!-- Full width on small screens (col-12), half width on medium screens (col-md-6), 
+                     and one-third width on large screens (col-lg-4) -->
+                <div class="product-details-container mb-5 mt-md-5">
+                    <!-- Custom class for product details, with margin on bottom (mb-5) and top margin on medium screens and above (mt-md-5) -->
+                    <p class="mb-0">{{ product.name }}</p> <!-- Product name with no bottom margin (mb-0) -->
+                    <p class="lead mb-0 text-left font-weight-bold">
+                        <!-- lead styles text with larger font size, mb-0 removes bottom margin, 
+                             text-left aligns text to the left, and font-weight-bold makes text bold -->
+                        ${{ product.price }}
+                    </p>
+                    {% if product.rating %}
+                        <!-- Show rating if available -->
+                        <small class="text-muted">
+                            <!-- text-muted styles text with lighter, muted color -->
+                            <i class="fas fa-star mr-1"></i>{{ product.rating }} / 5
+                            <!-- fas fa-star is a Font Awesome class for the star icon, 
+                                 mr-1 adds a small right margin -->
+                        </small>
+                    {% else %}
+                        <small class="text-muted">No Rating</small> <!-- Muted text for no rating -->
+                    {% endif %}
+                    <p class="mt-3">{{ product.description }}</p> <!-- Product description with top margin (mt-3) -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

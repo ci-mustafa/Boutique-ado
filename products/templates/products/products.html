@@ -49,12 +49,12 @@
                         <!-- Conditional rendering of product image -->
                         {% if product.image %}
                         <!-- If image exists, display the product image inside an anchor tag -->
-                        <a href="">
+                        <a href="{% url 'product-detail' pk=product.id %}">
                             <img class="card-img-top img-fluid" src="{{ product.image.url }}" alt="{{ product.name }}">
                         </a>
                         {% else %}
                         <!-- If no image, show a default placeholder image -->
-                        <a href="">
+                        <a href="{% url 'product-detail' pk=product.id %}">
                             <img class="card-img-top img-fluid" src="{{ MEDIA_URL }}noimage.png"
                                 alt="{{ product.name }}">
                         </a>
