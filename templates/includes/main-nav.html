@@ -25,9 +25,9 @@
                 <!-- "dropdown-menu" styles this as the dropdown content container.
                      "border-0" removes the border from the dropdown menu.
                      "aria-labelledby" links the dropdown to the parent link for accessibility. -->
-                <a href="" class="dropdown-item">By Price</a>
-                <a href="" class="dropdown-item ">By Rating</a>
-                <a href="" class="dropdown-item ">By Category</a>
+                <a href="{% url 'all-products' %}?sort=price&direction=asc" class="dropdown-item">By Price</a>
+                <a href="{% url 'all-products' %}?sort=rating&direction=desc" class="dropdown-item ">By Rating</a>
+                <a href="{% url 'all-products' %}?sort=category&direction=asc" class="dropdown-item ">By Category</a>
                 <a href="{% url 'all-products' %}" class="dropdown-item">All Products</a>
                 <!-- "dropdown-item" styles individual items within the dropdown menu. -->
             </div>
