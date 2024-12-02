@@ -171,7 +171,7 @@
           <li class="list-inline-item">
             <!-- Another inline list item -->
 
-            <a class="{% if grand_total %}text-info font-weight-bold{% else %}text-black{% endif %} nav-link" href="">
+            <a class="{% if grand_total %}text-info font-weight-bold{% else %}text-black{% endif %} nav-link" href="{% url 'view_bag' %}">
               <!-- Dynamic class:
                      - 'text-info font-weight-bold': If `grand_total` exists, text is styled as blue and bold.
                      - 'text-black': If `grand_total` doesn't exist, text is styled as black.

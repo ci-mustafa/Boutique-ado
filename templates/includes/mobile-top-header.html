@@ -79,7 +79,7 @@
 </li>
 
 <li class="list-inline-item">
-    <a class="{% if grand_total %}text-primary font-weight-bold{% else %}text-black{% endif %} nav-link d-block d-lg-none" href="">
+    <a class="{% if grand_total %}text-primary font-weight-bold{% else %}text-black{% endif %} nav-link d-block d-lg-none" href="{% url 'view_bag' %}">
         <!-- Applies conditional styling for the link based on whether "grand_total" is defined:
              - "text-primary font-weight-bold": Blue and bold if "grand_total" is present.
              - "text-black": Black text if "grand_total" is absent.

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <!-- Bootstrap 'container' class: Centers content and provides a responsive fixed-width layout -->
+        <div class="row">
+            <!-- Bootstrap 'row' class: Creates a horizontal group of columns inside the container -->
+            <div class="col"></div>
+            <!-- Bootstrap 'col' class: A single flexible column that spans the full width of the row -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="overlay"></div>
+
+<div class="container mb-2"> <!-- Bootstrap container with a small bottom margin -->
+    <div class="row"> <!-- Bootstrap row for horizontal layout -->
+        <div class="col"> <!-- Bootstrap column -->
+            <hr> <!-- Horizontal rule for a divider -->
+            <h2 class="logo-font mb-4">Shopping Bag</h2> <!-- Custom font class with a medium bottom margin -->
+            <hr> <!-- Horizontal rule for another divider -->
+        </div>
+    </div>
+
+    <div class="row"> <!-- Bootstrap row for layout -->
+        <div class="col"> <!-- Bootstrap column -->
+            {% if bag_items %}
+                <div class="table-responsive rounded"></div>
+                <!-- 
+                    - table-responsive: Makes tables scrollable on smaller screens 
+                    - rounded: Adds rounded corners to the element 
+                -->
+            {% else %}
+                <p class="lead mb-5">Your bag is empty.</p>
+                <!-- 
+                    - lead: Adds emphasis to the paragraph 
+                    - mb-5: Adds a large bottom margin 
+                -->
+                <a href="{% url 'all-products' %}" class="btn btn-outline-black rounded-0 btn-lg">
+                    <!-- 
+                        - btn: Base Bootstrap button class 
+                        - btn-outline-black: Custom outline button style 
+                        - rounded-0: Removes rounded corners 
+                        - btn-lg: Large button size 
+                    -->
+                    <span class="icon"> <!-- Custom class for icon -->
+                        <i class="fas fa-chevron-left"></i>
+                        <!-- 
+                            - fas: Font Awesome solid style (used for icons) 
+                            - fa-chevron-left: Left-pointing chevron icon 
+                        -->
+                    </span>
+                    <span class="text-uppercase">Keep Shopping</span>
+                    <!-- 
+                        - text-uppercase: Converts text to uppercase 
+                    -->
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

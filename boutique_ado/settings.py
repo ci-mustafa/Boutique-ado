@@ -27,11 +27,11 @@ SECRET_KEY = 'django-insecure-x=*yn7ztreo3ff*jn67ocpn)y!-dlyxid&#90=b95uuz0=_r20
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '8000-cimustafa-boutiqueado-cne7pkw7lui.ws-eu116.gitpod.io',
+    '8000-cimustafa-boutiqueado-jvl1sa163bm.ws-eu117.gitpod.io',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://8000-cimustafa-boutiqueado-cne7pkw7lui.ws-eu116.gitpod.io',
+    'https://8000-cimustafa-boutiqueado-jvl1sa163bm.ws-eu117.gitpod.io',
 ]
 
 
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'home',
     'products',
+    'bag',
 
 ]
 
