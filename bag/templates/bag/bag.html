@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block page_header %}
-    <div class="container header-container">
-        <!-- Bootstrap 'container' class: Centers content and provides a responsive fixed-width layout -->
-        <div class="row">
-            <!-- Bootstrap 'row' class: Creates a horizontal group of columns inside the container -->
-            <div class="col"></div>
-            <!-- Bootstrap 'col' class: A single flexible column that spans the full width of the row -->
-        </div>
+<div class="container header-container">
+    <!-- Bootstrap 'container' class: Centers content and provides a responsive fixed-width layout -->
+    <div class="row">
+        <!-- Bootstrap 'row' class: Creates a horizontal group of columns inside the container -->
+        <div class="col"></div>
+        <!-- Bootstrap 'col' class: A single flexible column that spans the full width of the row -->
     </div>
+</div>
 {% endblock %}
 
 {% block content %}
@@ -27,38 +27,135 @@
     <div class="row"> <!-- Bootstrap row for layout -->
         <div class="col"> <!-- Bootstrap column -->
             {% if bag_items %}
-                <div class="table-responsive rounded">
-                    {{ bag_items }}
-                </div>
-                <!-- 
+            <div class="table-responsive rounded">
+                <!-- table-responsive: Makes the table scrollable on smaller screens -->
+                <!-- rounded: Adds rounded corners to the table container -->
+
+                <table class="table table-sm table-borderless">
+                    <!-- table: Creates a basic Bootstrap-styled table -->
+                    <!-- table-sm: Reduces padding for more compact table rows -->
+                    <!-- table-borderless: Removes borders around table cells -->
+
+                    <thead class="text-black">
+                        <!-- thead: Defines the table header -->
+                        <!-- text-black: Applies black color to text in the header -->
+                        <tr>
+                            <th scope="col">Product Info</th>
+                            <th scope="col"></th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Subtotal</th>
+                        </tr>
+                    </thead>
+
+                    {% for item in bag_items %}
+                    <tr>
+                        <td class="p-3 w-25">
+                            <!-- p-3: Adds padding to the cell -->
+                            <!-- w-25: Sets the width of the cell to 25% -->
+                            <img class="img-fluid rounded" src="{{ item.product.image.url }}">
+                            <!-- img-fluid: Makes the image responsive (scales with parent container) -->
+                            <!-- rounded: Adds rounded corners to the image -->
+                        </td>
+                        <td class="py-3">
+                            <!-- py-3: Adds vertical padding (top and bottom) to the cell -->
+                            <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                            <!-- my-0: Removes top and bottom margins for the paragraph -->
+                            <!-- strong: Makes the text bold -->
+                            <p class="my-0 small text-muted">SKU: {{ item.product.sku|upper }}</p>
+                            <!-- small: Reduces font size -->
+                            <!-- text-muted: Applies muted/gray color to text -->
+                        </td>
+                        <td class="py-3">
+                            <p class="my-0">${{ item.product.price }}</p>
+                        </td>
+                        <td class="py-3 w-25">
+                            <!-- w-25: Sets width of the column to 25% -->
+                            <p class="my-0">{{ item.quantity }}</p>
+                        </td>
+                        <td class="py-3">
+                            <p class="my-0">${{ item.product.price }}</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="5" class="pt-5 text-right">
+                            <!-- colspan="5": Merges the cell across all 5 columns -->
+                            <!-- pt-5: Adds top padding to the cell -->
+                            <!-- text-right: Aligns text to the right -->
+                            <h6><strong>Bag Total: ${{ total|floatformat:2 }}</strong></h6>
+                            <!-- h6: Adds a small heading -->
+                            <!-- strong: Makes the text bold -->
+                            <h6>Delivery: ${{ delivery|floatformat:2 }}</h6>
+                            <h4 class="mt-4"><strong>Grand Total: ${{ grand_total|floatformat:2 }}</strong></h4>
+                            <!-- mt-4: Adds top margin to the heading -->
+                            {% if free_delivery_delta > 0 %}
+                            <p class="mb-1 text-danger">
+                                <!-- mb-1: Adds a small bottom margin -->
+                                <!-- text-danger: Applies a red color to the text -->
+                                You could get free delivery by spending just <strong>${{ free_delivery_delta }}</strong>
+                                more!
+                            </p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="text-right">
+                            <a href="{% url 'all-products' %}" class="btn btn-outline-black rounded-0 btn-lg">
+                                <!-- btn: Applies basic button styling -->
+                                <!-- btn-outline-black: Creates a button with a black outline -->
+                                <!-- rounded-0: Removes rounded corners from the button -->
+                                <!-- btn-lg: Makes the button larger -->
+                                <span class="icon">
+                                    <!-- icon: Custom class for icon styling -->
+                                    <i class="fas fa-chevron-left"></i>
+                                    <!-- fas fa-chevron-left: Font Awesome icon for a left arrow -->
+                                </span>
+                                <span class="text-uppercase">Keep Shopping</span>
+                                <!-- text-uppercase: Transforms text to uppercase -->
+                            </a>
+                            <a href="" class="btn btn-black rounded-0 btn-lg">
+                                <!-- btn-black: Creates a button with a black background -->
+                                <span class="text-uppercase">Secure Checkout</span>
+                                <span class="icon">
+                                    <i class="fas fa-lock"></i>
+                                    <!-- fas fa-lock: Font Awesome icon for a lock -->
+                                </span>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 
                     - table-responsive: Makes tables scrollable on smaller screens 
                     - rounded: Adds rounded corners to the element 
                 -->
             {% else %}
-                <p class="lead mb-5">Your bag is empty.</p>
-                <!-- 
+            <p class="lead mb-5">Your bag is empty.</p>
+            <!-- 
                     - lead: Adds emphasis to the paragraph 
                     - mb-5: Adds a large bottom margin 
                 -->
-                <a href="{% url 'all-products' %}" class="btn btn-outline-black rounded-0 btn-lg">
-                    <!-- 
+            <a href="{% url 'all-products' %}" class="btn btn-outline-black rounded-0 btn-lg">
+                <!-- 
                         - btn: Base Bootstrap button class 
                         - btn-outline-black: Custom outline button style 
                         - rounded-0: Removes rounded corners 
                         - btn-lg: Large button size 
                     -->
-                    <span class="icon"> <!-- Custom class for icon -->
-                        <i class="fas fa-chevron-left"></i>
-                        <!-- 
+                <span class="icon"> <!-- Custom class for icon -->
+                    <i class="fas fa-chevron-left"></i>
+                    <!-- 
                             - fas: Font Awesome solid style (used for icons) 
                             - fa-chevron-left: Left-pointing chevron icon 
                         -->
-                    </span>
-                    <span class="text-uppercase">Keep Shopping</span>
-                    <!-- 
+                </span>
+                <span class="text-uppercase">Keep Shopping</span>
+                <!-- 
                         - text-uppercase: Converts text to uppercase 
                     -->
-                </a>
+            </a>
             {% endif %}
         </div>
     </div>
