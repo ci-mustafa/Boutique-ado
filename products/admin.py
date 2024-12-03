@@ -11,6 +11,6 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['sku', 'name', 'description', 
-                    'price', 'rating', 'image', 'category__friendly_name'
+                    'price', 'rating', 'image', 'category__friendly_name', 'has_sizes'
                     ]
     ordering = ('sku',)
