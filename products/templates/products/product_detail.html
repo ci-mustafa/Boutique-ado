@@ -65,6 +65,55 @@
                 <small class="text-muted">No Rating</small> <!-- Muted text for no rating -->
                 {% endif %}
                 <p class="mt-3">{{ product.description }}</p> <!-- Product description with top margin (mt-3) -->
+                <form class="form" action="{% url 'add_to_bag' item_id=product.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <!-- form-row: A Bootstrap utility for organizing form elements into a single row. -->
+                        <div class="col-12">
+                            <!-- col-12: A column that spans all 12 grid units (full width of its parent). -->
+                            <p class="mt-3"><strong>Quantity:</strong></p>
+                            <!-- mt-3: Adds a margin-top of 1rem to create spacing above the text. -->
+                            <div class="form-group w-50">
+                                <!-- form-group: A wrapper class for form elements to provide spacing and alignment. -->
+                                <!-- w-50: Sets the width of this div to 50% of its parent container. -->
+                                <div class="input-group">
+                                    <!-- input-group: Groups input elements together for better styling and alignment. -->
+                                    <input class="form-control qty_input" type="number" name="quantity" value="1"
+                                        min="1" max="99" data-item_id="{{ product.id }}" id="id_qty_{{ product.id }}">
+                                    <!-- form-control: Provides consistent styling for input elements across browsers. -->
+                                    <!-- qty_input: A custom class -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <!-- col-12: Another column spanning the full width for the buttons below. -->
+                            <a href="{% url 'all-products' %}" class="btn btn-outline-black rounded-0 mt-5">
+                                <!-- btn: Base class for a button element. -->
+                                <!-- btn-outline-black: Creates an outlined button with a black border. -->
+                                <!-- rounded-0: Removes border-radius, making the button have sharp corners. -->
+                                <!-- mt-5: Adds a larger margin-top of 3rem for spacing above the button. -->
+                                <span class="icon">
+                                    <!-- icon: Likely a custom class for grouping or styling icons. -->
+                                    <i class="fas fa-chevron-left"></i>
+                                    <!-- fas fa-chevron-left: Font Awesome class for displaying a left chevron icon. -->
+                                </span>
+                                <span class="text-uppercase">Keep Shopping</span>
+                                <!-- text-uppercase: Transforms text to uppercase letters. -->
+                            </a>
+                            <input type="submit" class="btn btn-black rounded-0 text-uppercase mt-5" value="Add to Bag">
+                            <!-- btn: Base class for buttons. -->
+                            <!-- btn-black: Creates a button with a black background. -->
+                            <!-- rounded-0: Removes border-radius for sharp corners. -->
+                            <!-- text-uppercase: Transforms the text to uppercase. -->
+                            <!-- mt-5: Adds margin-top of 3rem for spacing. -->
+                        </div>
+                        <input type="hidden" name="redirect_url" value="{{ request.path }}">
+                        <!-- {{ request.path }} is a Django template variable that outputs the current URL path where the form is rendered. -->
+                        <!-- hidden input to store the current URL for redirection purposes. -->
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
