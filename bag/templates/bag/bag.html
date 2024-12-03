@@ -27,7 +27,9 @@
     <div class="row"> <!-- Bootstrap row for layout -->
         <div class="col"> <!-- Bootstrap column -->
             {% if bag_items %}
-                <div class="table-responsive rounded"></div>
+                <div class="table-responsive rounded">
+                    {{ bag_items }}
+                </div>
                 <!-- 
                     - table-responsive: Makes tables scrollable on smaller screens 
                     - rounded: Adds rounded corners to the element 
