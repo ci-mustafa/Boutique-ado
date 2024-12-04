@@ -14,28 +14,38 @@ def bag_contents(request):
     bag = request.session.get('bag', {})
 
     # Iterate through each item in the shopping bag.
-    # `bag.items()` returns a list of key-value pairs where the key is the item ID, and the value is the quantity.
-    for item_id, quantity in bag.items():
-        # Fetch the product object from the database using the item ID.
-        # If the product with the given primary key (pk) does not exist, raise a 404 error.
-        product = get_object_or_404(Product, pk=item_id)
-    
-        # Calculate the total cost by multiplying the product's price by the quantity and adding it to the running total.
-        total += quantity * product.price
-    
-        # Increment the total product count with the quantity of this item.
-        product_count += quantity
-    
-        # Append a dictionary with details of the current item to the `bag_items` list.
-        # This includes:
-        # - `item_id`: The unique identifier for the product.
-        # - `quantity`: The number of units of the product in the bag.
-        # - `product`: The full product object fetched from the database.
-        bag_items.append({
-            'item_id': item_id,
-            'quantity': quantity,
-            'product': product,
-        })
+    for item_id, item_data in bag.items():
+        # Check if the item data is a simple integer (for non-sized products).
+        if isinstance(item_data, int):
+            # Retrieve the product from the database using the item_id.
+            product = get_object_or_404(Product, pk=item_id)
+            # Update the total cost with the product's price multiplied by its quantity.
+            total += item_data * product.price
+            # Update the total product count with the quantity of this product.
+            product_count += item_data
+            # Append the product details to the bag items list for display.
+            bag_items.append({
+                'item_id': item_id,  # Unique identifier for the product.
+                'quantity': item_data,  # Quantity of the product.
+                'product': product,  # Product object for reference.
+            })
+        else:
+            # Handle products with size variants (item_data is a dictionary in this case).
+            product = get_object_or_404(Product, pk=item_id)
+            # Iterate through each size and its quantity in the item's data.
+            for size, quantity in item_data['items_by_size'].items():
+                # Update the total cost with the price of the product multiplied by the quantity.
+                total += quantity * product.price
+                # Update the total product count with the quantity for this size.
+                product_count += quantity
+                # Append the product details to the bag items list, including size information.
+                bag_items.append({
+                    'item_id': item_id,  # Unique identifier for the product.
+                    'quantity': quantity,  # Quantity of this specific size.
+                    'product': product,  # Product object for reference.
+                    'size': size,  # Specific size of the product.
+                })
+
 
     # Check if the total is below the free delivery threshold
     if total < settings.MIN_ORDER_FOR_FREE_DELIVERY:
