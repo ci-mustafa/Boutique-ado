@@ -61,8 +61,7 @@
                             <!-- py-3: Adds vertical padding (top and bottom) to the cell -->
                             <p class="my-0"><strong>{{ item.product.name }}</strong></p>
                             <!-- my-0: Removes top and bottom margins for the paragraph -->
-                            <p class="my-0"><strong>Size: </strong>{% if item.product.has_sizes %}{{ item.size|upper
-                                }}{% else %}N/A{% endif %}</p>
+                            <p class="my-0"><strong>Size: </strong>{% if item.product.has_sizes %}{{ item.size|upper }}{% else %}N/A{% endif %}</p>
                             <p class="my-0 small text-muted">SKU: {{ item.product.sku|upper }}</p>
                             <!-- small: Reduces font size -->
                             <!-- text-muted: Applies muted/gray color to text -->
