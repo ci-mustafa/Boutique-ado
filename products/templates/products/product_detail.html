@@ -108,11 +108,45 @@
                                 <!-- form-group: A wrapper class for form elements to provide spacing and alignment. -->
                                 <!-- w-50: Sets the width of this div to 50% of its parent container. -->
                                 <div class="input-group">
-                                    <!-- input-group: Groups input elements together for better styling and alignment. -->
+                                    <!-- Bootstrap Input Group: Groups multiple form controls and buttons inline -->
+
+                                    <div class="input-group-prepend">
+                                        <!-- Input Group Prepend: Adds content (button in this case) before the input field -->
+                                        <button class="decrement-qty btn btn-black rounded-0"
+                                            data-item_id="{{ product.id }}" id="decrement-qty_{{ product.id }}">
+                                            <!-- Button Classes:
+                                                 - btn: Base Bootstrap button class
+                                                 - btn-black: Custom class for black button (likely defined in CSS)
+                                                 - rounded-0: Removes rounded corners for a sharp edge -->
+                                            <span class="icon">
+                                                <!-- Icon wrapper class for styling the icon -->
+                                                <i class="fas fa-minus"></i>
+                                                <!-- Font Awesome Icon: "fas" for solid style and "fa-minus" for the minus symbol -->
+                                            </span>
+                                        </button>
+                                    </div>
+
                                     <input class="form-control qty_input" type="number" name="quantity" value="1"
                                         min="1" max="99" data-item_id="{{ product.id }}" id="id_qty_{{ product.id }}">
-                                    <!-- form-control: Provides consistent styling for input elements across browsers. -->
-                                    <!-- qty_input: A custom class -->
+                                    <!-- Input Field Classes:
+                                         - form-control: Applies Bootstrap's default styling to input fields
+                                         - qty_input: Custom class for additional styling (likely defined in CSS) -->
+
+                                    <div class="input-group-append">
+                                        <!-- Input Group Append: Adds content (button in this case) after the input field -->
+                                        <button class="increment-qty btn btn-black rounded-0"
+                                            data-item_id="{{ product.id }}" id="increment-qty_{{ product.id }}">
+                                            <!-- Button Classes:
+                                                 - btn: Base Bootstrap button class
+                                                 - btn-black: Custom class for black button (likely defined in CSS)
+                                                 - rounded-0: Removes rounded corners for a sharp edge -->
+                                            <span class="icon">
+                                                <!-- Icon wrapper class for styling the icon -->
+                                                <i class="fas fa-plus"></i>
+                                                <!-- Font Awesome Icon: "fas" for solid style and "fa-plus" for the plus symbol -->
+                                            </span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -157,4 +191,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block postloadjs %}
+    {{ block.super }}
+    {% include 'products/includes/quantity_input_script.html' %}
 {% endblock %}
