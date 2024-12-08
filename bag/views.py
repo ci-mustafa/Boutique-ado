@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse, HttpResponse
+from django.shortcuts import render, redirect, reverse, HttpResponse, get_object_or_404
 from django.contrib import messages
 from products.models import Product
 
@@ -21,7 +21,7 @@ def add_to_bag(request, item_id):
     - A redirect to the URL provided in the POST request.
     """
 
-    product = Product.objects.get(pk=item_id)
+    product = get_object_or_404(Product, pk=item_id)
     # Get the quantity of the product to add from the POST data
     quantity = int(request.POST.get('quantity'))
     
@@ -47,17 +47,21 @@ def add_to_bag(request, item_id):
             if size in bag[item_id]['items_by_size'].keys():
                 # If the size exists, update the quantity for that size.
                 bag[item_id]['items_by_size'][size] += quantity
+                messages.success(request, f"Added size {size.upper()} {product.name} updated the quantity to {bag[item_id]['items_by_size'][size]}.")
             else:
                 # If the size does not exist, add the size with the provided quantity.
                 bag[item_id]['items_by_size'][size] = quantity
+                messages.success(request, f"Added size {size.upper()} {product.name} to your bag.")
         else:
             # If the item does not exist in the bag, add it with the size and quantity information.
             bag[item_id] = {'items_by_size': {size: quantity}}
+            messages.success(request, f"Added size {size.upper()} {product.name} to your bag.")
     else:
         # If no size is provided (e.g., for non-sized products).
         if item_id in list(bag.keys()):
             # If the item already exists in the bag, simply update the quantity.
             bag[item_id] += quantity
+            messages.success(request, f"Updated {product.name} quantity to {bag[item_id]}.")
         else:
             # If the item does not exist in the bag, add it with the provided quantity.
             bag[item_id] = quantity
@@ -83,6 +87,7 @@ def adjust_bag(request, item_id):
     Handles both products with sizes (e.g., clothing) and without sizes.
     """
     
+    product = get_object_or_404(Product, pk=item_id)
     # Retrieve the new quantity from the POST request
     quantity = int(request.POST.get('quantity'))
     
@@ -99,6 +104,7 @@ def adjust_bag(request, item_id):
         if quantity > 0:
             # Update the quantity for the specific size of the product
             bag[item_id]['items_by_size'][size] = quantity
+            messages.success(request, f"Added size {size.upper()} {product.name} updated the quantity to {bag[item_id]['items_by_size'][size]}.")
         else:
             # If the quantity is 0, remove the size entry for the product
             del bag[item_id]['items_by_size'][size]
@@ -106,14 +112,17 @@ def adjust_bag(request, item_id):
             # If there are no more sizes for this product, remove the entire product from the bag
             if not bag[item_id]['items_by_size']:
                 bag.pop(item_id)
+            messages.success(request, f"Removed size {size.upper()} {product.name} from your bag.")
     else:
         # Handle products without sizes
         if quantity > 0:
             # Update the quantity for the product
             bag[item_id] = quantity
+            messages.success(request, f"Updated {product.name} quantity to {bag[item_id]}.")
         else:
             # If the quantity is 0, remove the product from the bag
             bag.pop(item_id)
+            messages.success(request, f"Removed {product.name} from your bag.")
     
     # Save the updated bag back into the session
     request.session['bag'] = bag
@@ -131,6 +140,7 @@ def remove_from_bag(request, item_id):
     """
 
     try:
+        product = get_object_or_404(Product, pk=item_id)
         # Initialize size as None
         size = None
 
@@ -148,9 +158,11 @@ def remove_from_bag(request, item_id):
             # If no sizes remain for this item, remove the item completely
             if not bag[item_id]['items_by_size']:
                 bag.pop(item_id)
+            messages.success(request, f"Removed size {size.upper()} {product.name} from your bag.")
         else:
             # If no size is specified, remove the entire item from the bag
             bag.pop(item_id)
+            messages.success(request, f"Removed {product.name} from your bag.")
 
         # Save the updated shopping bag back into the session
         request.session['bag'] = bag
@@ -159,6 +171,7 @@ def remove_from_bag(request, item_id):
         return HttpResponse(status=200)
 
     except Exception as e:
+        messages.error(request, f"Error removing item: {e}")
         # If an error occurs, return a 500 Internal Server Error response
         return HttpResponse(status=500)
 
