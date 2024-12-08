@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load bag_tools %}
 {% block page_header %}
 <div class="container header-container">
     <!-- Bootstrap 'container' class: Centers content and provides a responsive fixed-width layout -->
@@ -71,7 +71,7 @@
                         </td>
                         <td class="py-3 w-25">
                             <!-- Form for updating quantity of a specific item -->
-                            <form class="form update-form" method="POST" action="">
+                            <form class="form update-form" method="POST" action="{% url 'adjust_bag' item.item_id %}">
                                 <!-- CSRF token for security -->
                                 {% csrf_token %}
 
@@ -120,13 +120,13 @@
 
                             <!-- Link to remove the item, styled as a red (danger) button -->
                             <a class="remove-item text-danger float-right" id="remove_{{ item.item_id }}"
-                                data-size="{{ item.size }}">
+                                data-product_size="{{ item.size }}">
                                 <small>Remove</small> <!-- "Remove" text styled smaller -->
                             </a>
 
                         </td>
                         <td class="py-3">
-                            <p class="my-0">${{ item.product.price }}</p>
+                            <p class="my-0">${{ item.product.price | calc_subtotal:item.quantity }}</p>
                         </td>
                     </tr>
                     {% endfor %}
@@ -217,12 +217,9 @@
 {% block postloadjs %}
     {{ block.super }}
     {% include 'products/includes/quantity_input_script.html' %}
-{% endblock %}
 <script type="text/javascript">
     // Update quantity on click
     $('.update-link').click(function(e) {
-        // Prevent default behavior of the link (if any)
-        e.preventDefault();
 
         // Find the closest form element that corresponds to the clicked update link
         var form = $(this).prev('.update-form');
@@ -243,7 +240,7 @@
         var itemId = $(this).attr('id').split('remove_')[1];
 
         // Get the size of the item (in case it's a size-specific item in the cart)
-        var size = $(this).data('size');
+        var size = $(this).data('product_size');
 
         // Construct the URL for the POST request to remove the item
         var url = `/bag/remove/${itemId}`;
@@ -251,7 +248,7 @@
         // Prepare the data to be sent with the POST request
         var data = {
             'csrfmiddlewaretoken': csrfToken,  // CSRF token for security
-            'size': size                      // Size data (if applicable)
+            'product_size': size                      // Size data (if applicable)
         };
 
         // Send the POST request to the server
@@ -262,3 +259,4 @@
             });
     });
 </script>
+{% endblock %}
