@@ -2,40 +2,99 @@
     Core logic/payment flow for this comes from here:
     https://stripe.com/docs/payments/accept-a-payment
 
-    CSS styling guidelines and examples from here: 
+    CSS from here: 
     https://stripe.com/docs/stripe-js
 */
 
-// Retrieve the Stripe public key and client secret from the template
-// These values are rendered as hidden elements in the template
-var stripe_public_key = $('#id_stripe_public_key').text().slice(1, -1); 
-var client_secret = $('#id_client_secret').text().slice(1, -1);
+// Retrieve the Stripe public key and client secret from hidden HTML elements
+var stripePublicKey = $('#id_stripe_public_key').text().slice(1, -1); // Extract and clean the public key
+var clientSecret = $('#id_client_secret').text().slice(1, -1); // Extract and clean the client secret
 
-// Initialize Stripe with the public key
-var stripe = Stripe(stripe_public_key);
+// Initialize Stripe using the public key
+var stripe = Stripe(stripePublicKey);
 
-// Create an instance of Stripe Elements to manage UI components for the payment form
+// Initialize Stripe Elements
 var elements = stripe.elements();
 
-// Define the style object to customize the appearance of the Stripe Elements card input
+// Define the style for the Stripe card element
 var style = {
     base: {
-        color: '#000', // Text color for valid input
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif', // Font style
-        fontSmoothing: 'antialiased', // Smooth font rendering
-        fontSize: '16px', // Base font size
+        color: '#000', // Set base text color to black
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif', // Use Helvetica font family
+        fontSmoothing: 'antialiased', // Enable font smoothing for better readability
+        fontSize: '16px', // Set base font size
         '::placeholder': {
-            color: '#aab7c4' // Placeholder text color
+            color: '#aab7c4' // Set placeholder text color
         }
     },
     invalid: {
-        color: '#dc3545', // Text color for invalid input
-        iconColor: '#dc3545' // Icon color for invalid input
+        color: '#dc3545', // Set text color for invalid input to red
+        iconColor: '#dc3545' // Set icon color for invalid input to red
     }
 };
 
-// Create a Stripe Elements card component with the specified style
-var card = elements.create('card', {style: style});
+// Create the Stripe card element with the defined style
+var card = elements.create('card', { style: style });
 
-// Mount the card component into the DOM at the specified element
+// Mount the card element to the DOM element with ID 'card-element'
 card.mount('#card-element');
+
+// Handle real-time validation errors on the card element
+card.addEventListener('change', function (event) {
+    // Get the error display element
+    var errorDiv = document.getElementById('card-errors');
+    
+    if (event.error) {
+        // If there's an error, display it in the errorDiv
+        var html = `
+            <span class="icon" role="alert">
+                <i class="fas fa-times"></i> <!-- Error icon -->
+            </span>
+            <span>${event.error.message}</span> <!-- Error message -->
+        `;
+        $(errorDiv).html(html); // Update the HTML content of errorDiv with the error message
+    } else {
+        // Clear the errorDiv if there are no errors
+        errorDiv.textContent = '';
+    }
+});
+
+// Get the payment form element
+var form = document.getElementById('payment-form');
+
+// Add a submit event listener to handle form submission
+form.addEventListener('submit', function(ev) {
+    ev.preventDefault(); // Prevent the default form submission
+
+    // Disable the card element and the submit button to prevent multiple submissions
+    card.update({ 'disabled': true });
+    $('#submit-button').attr('disabled', true);
+
+    // Confirm the card payment using the client secret
+    stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+            card: card, // Pass the card element as the payment method
+        }
+    }).then(function(result) {
+        if (result.error) {
+            // If there's an error during the payment process, display it in the errorDiv
+            var errorDiv = document.getElementById('card-errors');
+            var html = `
+                <span class="icon" role="alert">
+                    <i class="fas fa-times"></i> <!-- Error icon -->
+                </span>
+                <span>${result.error.message}</span> <!-- Error message -->
+            `;
+            $(errorDiv).html(html); // Update the HTML content of errorDiv with the error message
+            
+            // Re-enable the card element and the submit button
+            card.update({ 'disabled': false });
+            $('#submit-button').attr('disabled', false);
+        } else {
+            // If the payment is successful
+            if (result.paymentIntent.status === 'succeeded') {
+                form.submit(); // Submit the form to the server
+            }
+        }
+    });
+});
