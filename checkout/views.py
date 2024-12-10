@@ -26,7 +26,9 @@ def checkout(request):
     
     # Context data to pass to the template
     context = {
-        'order_form': order_form  # Include the order form in the context
+        'order_form': order_form,  # Include the order form in the context
+        'stripe_public_key': 'pk_test_51QUAKYBhPSqjeLbObSBLXuvA62y8X7o20zXZkF0OCnCOuQrQdvSMFrOvaGi7HqyGW0WaFu9pm32wwOgT4rUg6DGL00qsg6z9Lr',
+        'client_secret': 'test client secret',
     }
     
     # Render the checkout template with the provided context
