@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- Load additional CSS for the checkout success page -->
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
+{% endblock %}
+
+<!-- Page header block -->
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col">
+                <!-- Placeholder for potential content (e.g., breadcrumbs, page title) -->
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+<!-- Main content block -->
+{% block content %}
+    <!-- Overlay for visual effect -->
+    <div class="overlay"></div>
+    
+    <!-- Main container for the success page -->
+    <div class="container">
+        
+        <!-- Thank you message row -->
+        <div class="row">
+            <div class="col">
+                <hr>
+                <!-- Display the thank you header -->
+                <h2 class="logo-font mb-4">Thank You</h2>
+                <hr>
+                <!-- Informational message with user's email -->
+                <p class="text-black">
+                    Your order information is below. A confirmation email will be sent to 
+                    <strong>{{ order.email }}</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- Placeholder row for additional order information (if needed) -->
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <!-- Additional order information could go here -->
+            </div>
+        </div>
+
+        <!-- Call-to-action row -->
+        <div class="row">
+            <div class="col-12 col-lg-7 text-right">
+                <!-- Button linking to the products page, pre-filtered for deals and new arrivals -->
+                <a href="{% url 'all-products' %}?category=new_arrivals,deals,clearance" 
+                   class="btn btn-black rounded-0 my-2">
+                    <span class="icon mr-2">
+                        <i class="fas fa-gifts"></i> <!-- Icon for the button -->
+                    </span>
+                    <span class="text-uppercase">Now check out the latest deals!</span>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
