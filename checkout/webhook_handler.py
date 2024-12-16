@@ -49,6 +49,8 @@ class StripeWH_Handler:
         Returns:
             HttpResponse: A response acknowledging receipt of the webhook, with the event type included in the content.
         """
+        intent = event.data.object
+        print(intent)
         # Log the event type in the response content for debugging or auditing purposes
         # The `event["type"]` specifies the exact type of webhook event received (e.g., payment_intent.succeeded).
         return HttpResponse(

@@ -1,11 +1,66 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404, HttpResponse
+from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.conf import settings
-import stripe
 from bag.contexts import bag_contents  # Importing the function to get the bag contents
 from .forms import OrderForm  # Importing the OrderForm to handle the checkout form
 from products.models import Product  # Importing the Product model to manage product data
 from .models import OrderLineItem, Order  # Importing the Order and OrderLineItem model to handle order details
+import stripe
+import json
+
+
+@require_POST
+def cache_checkout_data(request):
+    """
+    A view to cache checkout data in Stripe's PaymentIntent metadata.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing the data sent by the client.
+
+    Returns:
+        HttpResponse: A response indicating success or failure of the operation.
+    """
+    try:
+        # Retrieve the PaymentIntent ID from the client_secret sent in the POST data.
+        # The client_secret format is: <payment_intent_id>_secret_<unique_key>
+        # Extract only the PaymentIntent ID (everything before "_secret").
+        pid = request.POST.get('client_secret').split('_secret')[0]
+
+        # Set the Stripe API key to authenticate requests to Stripe.
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        # Modify the PaymentIntent's metadata with additional details.
+        stripe.PaymentIntent.modify(
+            pid,
+            metadata={
+                # Save the contents of the user's shopping bag (session data) as JSON.
+                'bag': json.dumps(request.session.get('bag', {})),
+
+                # Save whether the user wants their payment information saved.
+                'save_info': request.POST.get('save_info'),
+
+                # Store the username of the user making the request.
+                # If the user is not logged in, this will likely be an empty string.
+                'username': request.user,
+            }
+        )
+        # Return a 200 OK response indicating the data was successfully cached.
+        return HttpResponse(status=200)
+
+    except Exception as e:
+        # Handle any exceptions that occur during the process.
+        
+        # Display an error message to the user. This can be shown in the frontend using Django's messages framework.
+        messages.error(
+            request,
+            'Sorry, your payment cannot be processed right now. Please try again later.'
+        )
+
+        # Return a 400 Bad Request response with the exception details for debugging.
+        return HttpResponse(content=e, status=400)
+
+
 
 def checkout(request):
     """
