@@ -25,14 +25,14 @@ class OrderAdmin(admin.ModelAdmin):
     # Fields to be displayed as read-only in the admin form
     readonly_fields = ('order_number', 'date',
                        'delivery_cost', 'order_total',
-                       'grand_total',)
+                       'grand_total', 'original_bag', 'stripe_pid')
 
     # The order and grouping of fields in the admin form
     fields = ('order_number', 'date', 'full_name',
               'email', 'phone_number', 'country',
               'postcode', 'town_or_city', 'street_address1',
               'street_address2', 'county', 'delivery_cost',
-              'order_total', 'grand_total',)
+              'order_total', 'grand_total', 'original_bag', 'stripe_pid')
 
     # Columns to be displayed in the list view of the admin panel
     list_display = ('order_number', 'date', 'full_name',

@@ -91,7 +91,11 @@ def checkout(request):
         # Create an OrderForm instance with the submitted data
         order_form = OrderForm(form_data)
         if order_form.is_valid():  # Check if the form is valid
-            order = order_form.save()  # Save the form to create an order instance
+            order = order_form.save(commit=False)
+            pid = request.POST.get('client_secret').split('_secret')[0]
+            order.stripe_pid = pid
+            order.original_bag = json.dumps(bag)
+            order.save()
             # Loop through each item in the shopping bag
             for item_id, item_data in bag.items():
                 try:
