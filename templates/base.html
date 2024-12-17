@@ -155,7 +155,7 @@
               <a href="" class="dropdown-item">Product Management</a>
               <!-- 'dropdown-item': Styles the link as a dropdown menu item -->
               {% endif %}
-              <a href="" class="dropdown-item">My Profile</a>
+              <a href="{% url 'profile' %}" class="dropdown-item">My Profile</a>
               <!-- Option for authenticated users to view their profile -->
               <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
               <!-- Logout link for authenticated users -->
