@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db.models import Sum
 from django_countries.fields import CountryField
 from products.models import Product
+from profiles.models import UserProfile
 
 
 class Order(models.Model):
@@ -14,6 +15,9 @@ class Order(models.Model):
     # Unique order number, automatically generated and not editable
     order_number = models.CharField(max_length=32, null=False, editable=False)
 
+    # foreigen key to user
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.SET_NULL,
+                                     null=True, blank=True, related_name='orders')
     # Customer's full name
     full_name = models.CharField(max_length=50, null=False, blank=False)
 
