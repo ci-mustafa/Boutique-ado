@@ -24,12 +24,11 @@ class OrderForm(forms.ModelForm):
             'full_name': 'Full Name',
             'email': 'Email Address',
             'phone_number': 'Phone Number',
-            'country': 'Country',
             'postcode': 'Postal Code',
             'town_or_city': 'Town or City',
             'street_address1': 'Street Address 1',
             'street_address2': 'Street Address 2',
-            'county': 'County',
+            'county': 'County, state or locality',
         }
 
         # Set the autofocus attribute on the 'full_name' field
@@ -37,14 +36,15 @@ class OrderForm(forms.ModelForm):
 
         # Iterate through all the fields in the form
         for field in self.fields:
-            # If the field is required, add an asterisk to the placeholder
-            if self.fields[field].required:
-                placeholder = f'{placeholders[field]} *'
-            else:
-                placeholder = placeholders[field]
+            if field != 'country':
+                # If the field is required, add an asterisk to the placeholder
+                if self.fields[field].required:
+                    placeholder = f'{placeholders[field]} *'
+                else:
+                    placeholder = placeholders[field]
 
-            # Set the placeholder attribute of the field's widget
-            self.fields[field].widget.attrs['placeholder'] = placeholder
+                # Set the placeholder attribute of the field's widget
+                self.fields[field].widget.attrs['placeholder'] = placeholder
 
             # Add a custom CSS class to the field's widget for styling
             self.fields[field].widget.attrs['class'] = 'stripe-style-input'
