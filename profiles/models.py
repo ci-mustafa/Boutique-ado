@@ -24,7 +24,7 @@ class UserProfile(models.Model):
 
     # Country field using the django_countries package
     default_country = CountryField(
-        blank_label='Country *',  # Label displayed in the dropdown for blank options
+        blank_label='Country',  # Label displayed in the dropdown for blank options
         null=True,                # Field is allowed to have a NULL value in the database
         blank=True                # Field is allowed to be left blank in forms
     )
