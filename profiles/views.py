@@ -1,7 +1,9 @@
-from .models import UserProfile
-from .forms import UserProfileForm
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
+from .models import UserProfile
+from .forms import UserProfileForm
+from checkout.models import Order
+
 
 def profile(request):
     """
@@ -38,4 +40,42 @@ def profile(request):
 
     # Render the profile page with the provided template and context
     return render(request, template, context)
+
+
+def order_history(request, order_number):
+    """
+    View to display the order history for a specific order.
+
+    Args:
+        request: The HTTP request object.
+        order_number: The unique identifier for the order.
+
+    Returns:
+        HttpResponse: Renders the checkout success template with order details.
+    """
+    # Retrieve the order using the provided order number.
+    # If the order doesn't exist, return a 404 error.
+    order = get_object_or_404(Order, order_number=order_number)
+
+    # Add an informational message to notify the user about the order confirmation.
+    # The message includes the order number and mentions that a confirmation email was sent.
+    messages.info(request, (
+        f'This is a past confirmation for order number {order_number}. '
+        'A confirmation email was sent on the order date.'
+    ))
+
+    # Specify the template to render. In this case, it's the checkout success page.
+    template = 'checkout/checkout_success.html'
+
+    # Prepare the context data to pass to the template.
+    # The `order` contains the order details to display, 
+    # and `from_profile` indicates that this view is being accessed from the user profile.
+    context = {
+        'order': order,
+        'from_profile': True,
+    }
+
+    # Render the template with the provided context and return the response.
+    return render(request, template, context)
+
 

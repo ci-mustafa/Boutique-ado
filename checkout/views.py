@@ -6,6 +6,8 @@ from bag.contexts import bag_contents  # Importing the function to get the bag c
 from .forms import OrderForm  # Importing the OrderForm to handle the checkout form
 from products.models import Product  # Importing the Product model to manage product data
 from .models import OrderLineItem, Order  # Importing the Order and OrderLineItem model to handle order details
+from profiles.models import UserProfile
+from profiles.forms import UserProfileForm
 import stripe
 import json
 
@@ -157,9 +159,26 @@ def checkout(request):
             amount=stripe_total,  # Total amount in cents
             currency=settings.STRIPE_CURRENCY  # Currency (e.g., "eur")
         )
-
-        # Create a new, blank OrderForm for the user to fill out
-        order_form = OrderForm()
+         # Attempt to prefill the form with any info the user maintains in their profile
+        if request.user.is_authenticated:
+            try:
+                profile = UserProfile.objects.get(user=request.user)
+                order_form = OrderForm(initial={
+                    'full_name': profile.user.get_full_name(),
+                    'email': profile.user.email,
+                    'phone_number': profile.default_phone_number,
+                    'country': profile.default_country,
+                    'postcode': profile.default_postcode,
+                    'town_or_city': profile.default_town_or_city,
+                    'street_address1': profile.default_street_address1,
+                    'street_address2': profile.default_street_address2,
+                    'county': profile.default_county,
+                })
+            except UserProfile.DoesNotExist:
+                order_form = OrderForm()
+        else:
+            # Create a new, blank OrderForm for the user to fill out
+            order_form = OrderForm()
 
     # Warn the user if the Stripe public key is missing
     if not stripe_public_key:
@@ -182,34 +201,65 @@ def checkout(request):
 
 def checkout_success(request, order_number):
     """
-    Handle successful checkouts:
-    - Display a success message to the user
-    - Remove the shopping bag from the session
-    - Render the checkout success page
-    """
+    Handle successful checkouts.
 
-    # Retrieve the user's save info preference from the session (if available)
+    Args:
+        request: The HTTP request object.
+        order_number: The unique identifier for the order.
+
+    Returns:
+        HttpResponse: Renders the checkout success template with the order details.
+    """
+    # Retrieve the 'save_info' flag from the session, which determines if user info should be saved.
     save_info = request.session.get('save_info')
 
-    # Get the order using the order number or return a 404 error if not found
+    # Get the order using the provided order number.
+    # If the order doesn't exist, return a 404 error.
     order = get_object_or_404(Order, order_number=order_number)
 
-    # Display a success message with the order details
+    # If the user is logged in, associate their profile with the order.
+    if request.user.is_authenticated:
+        # Retrieve the user's profile.
+        profile = UserProfile.objects.get(user=request.user)
+
+        # Attach the user's profile to the order and save the order.
+        order.user_profile = profile
+        order.save()
+
+        # If the 'save_info' flag is set, update the user's profile with the order details.
+        if save_info:
+            # Prepare the profile data using the order's delivery information.
+            profile_data = {
+                'default_phone_number': order.phone_number,
+                'default_country': order.country,
+                'default_postcode': order.postcode,
+                'default_town_or_city': order.town_or_city,
+                'default_street_address1': order.street_address1,
+                'default_street_address2': order.street_address2,
+                'default_county': order.county,
+            }
+            # Use a form to validate and save the profile data.
+            user_profile_form = UserProfileForm(profile_data, instance=profile)
+            if user_profile_form.is_valid():
+                user_profile_form.save()
+
+    # Display a success message to the user, including the order number and email address.
     messages.success(request, f'Order successfully processed! \
         Your order number is {order_number}. A confirmation \
         email will be sent to {order.email}.')
 
-    # Remove the shopping bag from the session as the order is completed
+    # Clear the shopping bag from the session as the checkout process is complete.
     if 'bag' in request.session:
         del request.session['bag']
 
-    # Define the template to use for the checkout success page
+    # Define the template for displaying the checkout success page.
     template = 'checkout/checkout_success.html'
 
-    # Define the context to pass to the template
+    # Prepare the context data, including the order, to pass to the template.
     context = {
-        'order': order,  # Include the order details for the success page
+        'order': order,
     }
 
-    # Render the checkout success template with the provided context
+    # Render the template with the context and return the response.
     return render(request, template, context)
+

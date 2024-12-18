@@ -236,14 +236,23 @@
     <!-- Call-to-action row -->
     <div class="row">
         <div class="col-12 col-lg-7 text-right">
-            <!-- Button linking to the products page, pre-filtered for deals and new arrivals -->
-            <a href="{% url 'all-products' %}?category=new_arrivals,deals,clearance"
-                class="btn btn-black rounded-0 my-2">
-                <span class="icon mr-2">
+            {% if from_profile %}
+                    <a href="{% url 'profile' %}" class="btn btn-black rounded-0 my-2">
+                        <span class="icon mr-2">
+                            <i class="fas fa-angle-left"></i>
+                        </span>
+                        <span class="text-uppercase">Back to Profile</span>
+                    </a>
+            {% else %}
+                    <!-- Button linking to the products page, pre-filtered for deals and new arrivals -->
+                    <a href="{% url 'all-products' %}?category=new_arrivals,deals,clearance"
+                    class="btn btn-black rounded-0 my-2">
+                    <span class="icon mr-2">
                     <i class="fas fa-gifts"></i> <!-- Icon for the button -->
-                </span>
-                <span class="text-uppercase">Now check out the latest deals!</span>
-            </a>
+                    </span>
+                    <span class="text-uppercase">Now check out the latest deals!</span>
+                    </a>
+            {% endif %}  
         </div>
     </div>
 </div>
