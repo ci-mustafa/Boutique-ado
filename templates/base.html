@@ -150,21 +150,21 @@
 
               {% if request.user.is_authenticated %}
               <!-- Checks if the user is logged in -->
-              {% if request.user.is_superuser %}
-              <!-- Checks if the logged-in user is a superuser -->
-              <a href="" class="dropdown-item">Product Management</a>
-              <!-- 'dropdown-item': Styles the link as a dropdown menu item -->
-              {% endif %}
-              <a href="{% url 'profile' %}" class="dropdown-item">My Profile</a>
-              <!-- Option for authenticated users to view their profile -->
-              <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
-              <!-- Logout link for authenticated users -->
+                {% if request.user.is_superuser %}
+                <!-- Checks if the logged-in user is a superuser -->
+                <a href="{% url 'add_product' %}" class="dropdown-item">Product Management</a>
+                <!-- 'dropdown-item': Styles the link as a dropdown menu item -->
+                {% endif %}
+                <a href="{% url 'profile' %}" class="dropdown-item">My Profile</a>
+                <!-- Option for authenticated users to view their profile -->
+                <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
+                <!-- Logout link for authenticated users -->
               {% else %}
-              <!-- If the user is not logged in -->
-              <a href="{% url 'account_signup' %}" class="dropdown-item">Register</a>
-              <!-- Registration link for unauthenticated users -->
-              <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
-              <!-- Login link for unauthenticated users -->
+                <!-- If the user is not logged in -->
+                <a href="{% url 'account_signup' %}" class="dropdown-item">Register</a>
+                <!-- Registration link for unauthenticated users -->
+                <a href="{% url 'account_login' %}" class="dropdown-item">Login</a>
+                <!-- Login link for unauthenticated users -->
               {% endif %}
             </div>
           </li>

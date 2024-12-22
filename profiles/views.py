@@ -23,9 +23,11 @@ def profile(request):
             form.save()
             # Add a success message to be displayed on the frontend
             messages.success(request, 'Profile updated successfully')
-
-    # For GET requests or after a successful POST, initialize the form with the user's profile instance
-    form = UserProfileForm(instance=profile)
+        else:
+            messages.error(request, 'Update failed, please ensure the form is valid!')
+    else:
+        # For GET requests or after a successful POST, initialize the form with the user's profile instance
+        form = UserProfileForm(instance=profile)
     # Retrieve all orders associated with the user's profile
     orders = profile.orders.all()
 

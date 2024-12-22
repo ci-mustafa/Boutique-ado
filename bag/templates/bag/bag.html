@@ -51,11 +51,11 @@
                     {% for item in bag_items %}
                     <tr>
                         <td class="p-3 w-25">
-                            <!-- p-3: Adds padding to the cell -->
-                            <!-- w-25: Sets the width of the cell to 25% -->
-                            <img class="img-fluid rounded" src="{{ item.product.image.url }}">
-                            <!-- img-fluid: Makes the image responsive (scales with parent container) -->
-                            <!-- rounded: Adds rounded corners to the image -->
+                            {% if item.product.image %}
+                            <img class="img-fluid rounded" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                            {% else %}
+                            <img class="img-fluid rounded" src="{{ MEDIA_URL }}noimage.png" alt="{{ item.product.name }}">
+                            {% endif %}
                         </td>
                         <td class="py-3">
                             <!-- py-3: Adds vertical padding (top and bottom) to the cell -->
