@@ -1,11 +1,14 @@
-from django import forms  # Import Django forms for creating form classes
-from .models import Product, Category  # Import the Product and Category models
+from django import forms  
+from .models import Product, Category
+from .widgets import CustomClearableFileInput
 
 # Define a form for the Product model
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product  # Specify the model to use for this form
         fields = '__all__'  # Include all fields from the Product model in the form
+    
+    image = forms.ImageField(label='Image', required=False, widget=CustomClearableFileInput)
 
     def __init__(self, *args, **kwargs):
         """
